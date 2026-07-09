@@ -1,0 +1,57 @@
+import { useEffect, useState } from "react";
+import Layout, { type AdminPage, type EmployeePage } from "./components/Layout";
+import AdminDashboardStats from "./pages/AdminDashboardStats";
+import CreateTaskPage from "./pages/CreateTaskPage";
+import ViewTasksPage from "./pages/ViewTasksPage";
+import EmployeeBoard from "./pages/Employeeboard";
+import EmployeeDashboard from "./pages/EmployeeDashboard";
+import { getUsers } from "./api/tasks";
+import type { User } from "./types";
+
+function App() {
+  const [view, setView] = useState<"admin" | "employee">("admin");
+  const [adminPage, setAdminPage] = useState<AdminPage>("dashboard");
+  const [employeePage, setEmployeePage] = useState<EmployeePage>("dashboard");
+
+  const [employees, setEmployees] = useState<User[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<number | "">("");
+
+  useEffect(() => {
+    getUsers().then((data) => {
+      setEmployees(data);
+      if (data.length > 0) setCurrentUserId(data[0].id);
+    });
+  }, []);
+
+  const currentUser = employees.find((e) => e.id === currentUserId);
+
+  return (
+    <Layout
+      view={view}
+      onViewChange={setView}
+      adminPage={adminPage}
+      onAdminPageChange={setAdminPage}
+      employeePage={employeePage}
+      onEmployeePageChange={setEmployeePage}
+    >
+      {view === "admin" && adminPage === "dashboard" && (
+        <AdminDashboardStats onViewAllTasks={() => setAdminPage("view")} />
+      )}
+      {view === "admin" && adminPage === "create" && <CreateTaskPage />}
+      {view === "admin" && adminPage === "view" && <ViewTasksPage />}
+
+      {view === "employee" && employeePage === "dashboard" && (
+        <EmployeeDashboard currentUser={currentUser} />
+      )}
+      {view === "employee" && employeePage === "my-work" && (
+        <EmployeeBoard
+          employees={employees}
+          currentUserId={currentUserId}
+          onCurrentUserChange={setCurrentUserId}
+        />
+      )}
+    </Layout>
+  );
+}
+
+export default App;
