@@ -321,7 +321,8 @@ function EmployeeBoard({
                         sx={{
                           textTransform: "none",
                           borderRadius: 2,
-                          px: 1.2,
+                          px: 1.5,
+                          minWidth: 96,
                         }}
                       >
                         Start
@@ -334,7 +335,12 @@ function EmployeeBoard({
                       color="warning"
                       startIcon={<PauseIcon />}
                       onClick={() => quickAction(task, "halted")}
-                      sx={{ textTransform: "none", borderRadius: 2 }}
+                      sx={{
+                        textTransform: "none",
+                        borderRadius: 2,
+                        px: 1.5,
+                        minWidth: 96,
+                      }}
                     >
                       Halt
                     </Button>
@@ -345,7 +351,12 @@ function EmployeeBoard({
                       variant="outlined"
                       startIcon={<HourglassEmptyIcon />}
                       onClick={() => quickAction(task, "in_progress")}
-                      sx={{ textTransform: "none", borderRadius: 2 }}
+                      sx={{
+                        textTransform: "none",
+                        borderRadius: 2,
+                        px: 1.5,
+                        minWidth: 96,
+                      }}
                     >
                       Resume
                     </Button>
@@ -357,7 +368,12 @@ function EmployeeBoard({
                       color="success"
                       startIcon={<CheckCircleIcon />}
                       onClick={() => quickAction(task, "completed", 100)}
-                      sx={{ textTransform: "none", borderRadius: 2 }}
+                      sx={{
+                        textTransform: "none",
+                        borderRadius: 2,
+                        px: 1.5,
+                        minWidth: 96,
+                      }}
                     >
                       Complete
                     </Button>
@@ -368,9 +384,15 @@ function EmployeeBoard({
               <Box sx={{ px: 2, pb: 2 }}>
                 <Button
                   fullWidth
+                  size="small"
                   variant="contained"
                   onClick={() => openUpdate(task)}
-                  sx={{ textTransform: "none", borderRadius: 2 }}
+                  sx={{
+                    textTransform: "none",
+                    borderRadius: 2,
+                    py: 1.1,
+                    minHeight: 38,
+                  }}
                 >
                   Update progress & notes
                 </Button>
