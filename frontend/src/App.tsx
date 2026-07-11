@@ -18,16 +18,23 @@ function App() {
   const [authView, setAuthView] = useState<"login" | "signup">("login");
   const { user } = useAuth();
   const [employees, setEmployees] = useState<User[]>([]);
-  const [currentUserId, setCurrentUserId] = useState<number | "">("");
+  const currentUserId = user?.id ?? "";
 
   useEffect(() => {
     getUsers().then((data) => {
       setEmployees(data);
-      if (data.length > 0) setCurrentUserId(data[0].id);
     });
   }, []);
 
-  const currentUser = employees.find((e) => e.id === currentUserId);
+  useEffect(() => {
+    if (user?.roles?.includes("admin")) {
+      setView("admin");
+    } else if (user) {
+      setView("employee");
+    }
+  }, [user]);
+
+  const currentUser = employees.find((e) => e.id === user?.id);
 
   if (!user) {
     if (authView === "signup") {
@@ -53,14 +60,10 @@ function App() {
       {view === "admin" && adminPage === "view" && <ViewTasksPage />}
 
       {view === "employee" && employeePage === "dashboard" && (
-        <EmployeeDashboard currentUser={currentUser} />
+        <EmployeeDashboard currentUser={currentUser ?? user ?? undefined} />
       )}
       {view === "employee" && employeePage === "my-work" && (
-        <EmployeeBoard
-          employees={employees}
-          currentUserId={currentUserId}
-          onCurrentUserChange={setCurrentUserId}
-        />
+        <EmployeeBoard employees={employees} currentUserId={currentUserId} />
       )}
     </Layout>
   );

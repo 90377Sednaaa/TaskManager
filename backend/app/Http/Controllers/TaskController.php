@@ -43,7 +43,10 @@ class TaskController extends Controller
     {
         $tasks = Task::whereHas('users', function ($query) use ($userId) {
             $query->where('users.id', $userId);
-        })->get();
+        })
+            ->with('users:id,name', 'creator:id,name')
+            ->orderByDesc('updated_at')
+            ->get();
 
         return response()->json($tasks);
     }

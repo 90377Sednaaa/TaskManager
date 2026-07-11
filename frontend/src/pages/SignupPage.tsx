@@ -1,6 +1,5 @@
 import { useState, type FormEvent } from "react";
 import { register } from "../api/auth";
-import { useAuth } from "../context/AuthContext";
 import {
   Alert,
   Box,
@@ -23,7 +22,6 @@ type SignupPageProps = {
 };
 
 function SignupPage({ onSwitchToLogin }: SignupPageProps) {
-  const { setAuth } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -43,8 +41,8 @@ function SignupPage({ onSwitchToLogin }: SignupPageProps) {
 
     setSubmitting(true);
     try {
-      const response = await register(name, email, password, confirmPassword);
-      setAuth(response.user, response.token);
+      await register(name, email, password, confirmPassword);
+      onSwitchToLogin();
     } catch (err) {
       setError("Unable to create account. Please try again.");
     } finally {

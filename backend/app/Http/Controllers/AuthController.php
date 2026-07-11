@@ -23,12 +23,19 @@ class AuthController extends Controller
         ]);
 
         $user->assignRole('employee');
+        $user->load('roles');
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'user' => $user,
-            'token' => $token], 201);
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'roles' => $user->getRoleNames()->toArray(),
+            ],
+            'token' => $token,
+        ], 201);
     }
 
     public function login(Request $request)
@@ -45,10 +52,16 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
+        $user->load('roles');
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'user' => $user,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'roles' => $user->getRoleNames()->toArray(),
+            ],
             'token' => $token,
         ]);
     }

@@ -8,7 +8,6 @@ import {
   Paper,
   Chip,
   Stack,
-  Avatar,
   LinearProgress,
   Button,
   Dialog,
@@ -30,27 +29,6 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import { getMyTasks, updateTaskStatus, getTaskLogs } from "../api/tasks";
 import type { Task, TaskStatus, TaskLog, User } from "../types";
-
-function initials(name: string) {
-  return name
-    .split(" ")
-    .map((p) => p[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
-}
-
-function stringToColor(name: string) {
-  const colors = [
-    "#1976d2",
-    "#2e7d32",
-    "#d32f2f",
-    "#f9a825",
-    "#7b1fa2",
-    "#0288d1",
-  ];
-  return colors[name.charCodeAt(0) % colors.length];
-}
 
 const statusColor: Record<
   string,
@@ -79,14 +57,9 @@ const taskAccent: Record<string, string> = {
 interface EmployeeBoardProps {
   employees: User[];
   currentUserId: number | "";
-  onCurrentUserChange: (id: number) => void;
 }
 
-function EmployeeBoard({
-  employees,
-  currentUserId,
-  onCurrentUserChange,
-}: EmployeeBoardProps) {
+function EmployeeBoard({ employees, currentUserId }: EmployeeBoardProps) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -204,7 +177,7 @@ function EmployeeBoard({
 
       {!loading && tasks.length === 0 && (
         <Typography color="text.disabled">
-          No tasks assigned to this employee yet.
+          No tasks assigned to you yet.
         </Typography>
       )}
 
