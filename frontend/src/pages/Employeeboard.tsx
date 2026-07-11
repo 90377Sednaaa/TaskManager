@@ -10,10 +10,6 @@ import {
   Stack,
   Avatar,
   LinearProgress,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
   Button,
   Dialog,
   DialogTitle,
@@ -193,45 +189,14 @@ function EmployeeBoard({
             <Typography color="text.secondary" sx={{ mt: 0.6 }}>
               {currentEmployee
                 ? `${activeCount} active task${activeCount === 1 ? "" : "s"} assigned to ${currentEmployee.name}`
-                : "Select an employee to view their tasks"}
+                : "Loading your tasks..."}
             </Typography>
           </Box>
-
-          <FormControl size="small" sx={{ minWidth: 220 }}>
-            <InputLabel>Viewing as</InputLabel>
-            <Select
-              label="Viewing as"
-              value={currentUserId}
-              onChange={(e) => onCurrentUserChange(e.target.value as number)}
-            >
-              {employees.map((emp) => (
-                <MenuItem key={emp.id} value={emp.id}>
-                  <Stack
-                    direction="row"
-                    spacing={1}
-                    sx={{ alignItems: "center" }}
-                  >
-                    <Avatar
-                      sx={{
-                        width: 22,
-                        height: 22,
-                        fontSize: 10,
-                        bgcolor: stringToColor(emp.name),
-                      }}
-                    >
-                      {initials(emp.name)}
-                    </Avatar>
-                    <span>{emp.name}</span>
-                  </Stack>
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
         </Stack>
 
         <Alert severity="info" sx={{ mt: 2.2, borderRadius: 2 }}>
-          No login yet — use this dropdown to simulate being a specific
-          employee.
+          Your assigned work is shown here so you can track progress and update
+          tasks.
         </Alert>
       </Paper>
 

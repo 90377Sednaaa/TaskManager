@@ -9,18 +9,24 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Switch,
-  FormControlLabel,
   IconButton,
   useMediaQuery,
   useTheme,
+  Divider,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AddTaskIcon from "@mui/icons-material/AddTask";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import LogoutIcon from "@mui/icons-material/Logout";
 import type { ReactNode } from "react";
+import { useAuth } from "../context/AuthContext";
 
 const drawerWidth = 220;
 
@@ -40,7 +46,6 @@ interface LayoutProps {
 function Layout({
   children,
   view,
-  onViewChange,
   adminPage,
   onAdminPageChange,
   employeePage,
@@ -49,6 +54,8 @@ function Layout({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [logoutOpen, setLogoutOpen] = useState(false);
+  const { logout } = useAuth();
 
   const handleAdminNav = (page: AdminPage) => {
     onAdminPageChange(page);
@@ -57,6 +64,12 @@ function Layout({
 
   const handleEmployeeNav = (page: EmployeePage) => {
     onEmployeePageChange(page);
+    if (isMobile) setMobileOpen(false);
+  };
+
+  const handleLogout = () => {
+    logout();
+    setLogoutOpen(false);
     if (isMobile) setMobileOpen(false);
   };
 
@@ -180,6 +193,26 @@ function Layout({
           </ListItemButton>
         </>
       )}
+
+      <Box sx={{ mt: 2, pt: 1.5 }}>
+        <Divider sx={{ mb: 1.2 }} />
+        <ListItemButton
+          onClick={() => setLogoutOpen(true)}
+          sx={{
+            borderRadius: 2,
+            py: 1,
+            px: 1.2,
+            color: "error.main",
+            bgcolor: "rgba(211, 47, 47, 0.06)",
+            "&:hover": { bgcolor: "rgba(211, 47, 47, 0.12)" },
+          }}
+        >
+          <ListItemIcon sx={{ color: "error.main", minWidth: 36 }}>
+            <LogoutIcon />
+          </ListItemIcon>
+          <ListItemText primary="Logout" />
+        </ListItemButton>
+      </Box>
     </List>
   );
 
@@ -225,22 +258,6 @@ function Layout({
               Task Manager
             </Typography>
           </Box>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={view === "admin"}
-                onChange={(e) =>
-                  onViewChange(e.target.checked ? "admin" : "employee")
-                }
-              />
-            }
-            label={
-              isMobile
-                ? ""
-                : `View as: ${view === "admin" ? "Admin" : "Employee"}`
-            }
-            labelPlacement="start"
-          />
         </Toolbar>
       </AppBar>
 
@@ -325,6 +342,23 @@ function Layout({
         <Toolbar />
         {children}
       </Box>
+
+      <Dialog open={logoutOpen} onClose={() => setLogoutOpen(false)}>
+        <DialogTitle>Log out?</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1">
+            Are you sure you want to log out of your account?
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button onClick={() => setLogoutOpen(false)} variant="outlined">
+            Cancel
+          </Button>
+          <Button onClick={handleLogout} color="error" variant="contained">
+            Logout
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

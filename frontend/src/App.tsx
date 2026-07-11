@@ -7,12 +7,16 @@ import EmployeeBoard from "./pages/Employeeboard";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import { getUsers } from "./api/tasks";
 import type { User } from "./types";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+import { useAuth } from "./context/AuthContext";
 
 function App() {
   const [view, setView] = useState<"admin" | "employee">("admin");
   const [adminPage, setAdminPage] = useState<AdminPage>("dashboard");
   const [employeePage, setEmployeePage] = useState<EmployeePage>("dashboard");
-
+  const [authView, setAuthView] = useState<"login" | "signup">("login");
+  const { user } = useAuth();
   const [employees, setEmployees] = useState<User[]>([]);
   const [currentUserId, setCurrentUserId] = useState<number | "">("");
 
@@ -24,6 +28,14 @@ function App() {
   }, []);
 
   const currentUser = employees.find((e) => e.id === currentUserId);
+
+  if (!user) {
+    if (authView === "signup") {
+      return <SignupPage onSwitchToLogin={() => setAuthView("login")} />;
+    }
+
+    return <LoginPage onSwitchToSignup={() => setAuthView("signup")} />;
+  }
 
   return (
     <Layout
