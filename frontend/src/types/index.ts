@@ -29,3 +29,8 @@ export interface TaskLog {
   created_at: string;
   user: User;
 }
+
+export interface AuthResponse {
+  user: User;
+  token: string;
+}
