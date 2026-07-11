@@ -260,10 +260,3 @@ npm run build                       # production build
 - Progress and status are auto-linked: setting progress to 100 marks the task completed, and marking a task completed sets progress to 100.
 
 ---
-
-## Known Limitations (MVP scope)
-
-- `created_by` on new tasks is currently hardcoded to the seeded Admin user (id `1`) rather than using the actual logged-in admin's ID.
-- No password reset / "forgot password" flow yet.
-- No pagination — fine for demo data, would need adding for large task lists.
-- No route-level role middleware yet (e.g. `role:admin` on task-management routes) — currently any authenticated user could call admin-only endpoints directly via the API, even though the UI hides those actions from employees. Should be added before this goes anywhere beyond local development.
