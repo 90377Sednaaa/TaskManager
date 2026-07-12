@@ -93,7 +93,11 @@ cd backend
 composer install
 ```
 
-Copy `.env.example` to `.env` if it doesn't already exist, then set your database credentials:
+Cloning the repository does **not** create a `.env` file. Copy `.env.example` to create your local configuration file:
+
+```powershell
+Copy-Item .env.example .env
+```
 
 ```
 DB_CONNECTION=mysql
