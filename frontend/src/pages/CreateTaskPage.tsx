@@ -14,6 +14,7 @@ import {
 import AddTaskIcon from "@mui/icons-material/AddTask";
 import SendIcon from "@mui/icons-material/Send";
 import { getUsers, createTask } from "../api/tasks";
+import { useAuth } from "../context/AuthContext";
 import type { User } from "../types";
 
 function stringToColor(name: string) {
@@ -39,6 +40,7 @@ function initials(name: string) {
 }
 
 function CreateTaskPage() {
+  const { user } = useAuth();
   const [employees, setEmployees] = useState<User[]>([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -64,12 +66,17 @@ function CreateTaskPage() {
       return;
     }
 
+    if (!user) {
+      setError("You must be logged in to create a task.");
+      return;
+    }
+
     setSubmitting(true);
     try {
       await createTask({
         title,
         description,
-        created_by: 1,
+        created_by: user.id,
         user_ids: selectedUsers.map((u) => u.id),
       });
       setSuccess(true);
