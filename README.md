@@ -235,6 +235,29 @@ npm run build                       # production build
 
 ---
 
+## ERD
+
+<img width="1488" height="2866" alt="User Task Management-2026-07-12-123250" src="https://github.com/user-attachments/assets/ee6e7433-f16b-4747-87fa-005f5320413b" />
+
+## Database design
+
+The main application tables are:
+
+- `users` — administrators and employees
+- `tasks` — task title, description, current status, progress, and creator
+- `task_user` — assignment table connecting many employees to many tasks
+- `task_logs` — historical employee updates, notes, progress, and status snapshots
+
+### Relationships
+
+- One user can create many tasks.
+- One task can be assigned to many users, and one user can receive many tasks. `task_user` handles this many-to-many relationship.
+- One task can have many task logs.
+- One user can create many task logs.
+
+Laravel Sanctum and Spatie Permission also create supporting tables for authentication and roles, including personal access tokens, roles, and permissions.
+---
+
 ## API Endpoints
 
 | Method | Endpoint                 | Purpose                                   | Auth required |
