@@ -73,6 +73,7 @@ function Layout({
     if (isMobile) setMobileOpen(false);
   };
 
+  // Shared sidebar navigation items for both desktop and mobile drawers.
   const navList = (
     <List sx={{ px: 1, mt: 1 }}>
       {view === "admin" && (
@@ -218,6 +219,7 @@ function Layout({
 
   return (
     <Box sx={{ display: "flex" }}>
+      {/* Header component: fixed top bar with the app title and mobile menu button. */}
       <AppBar
         position="fixed"
         color="inherit"
@@ -261,6 +263,7 @@ function Layout({
         </Toolbar>
       </AppBar>
 
+      {/* Sidebar navigation component for desktop screens. */}
       {!isMobile && (
         <Drawer
           variant="permanent"
@@ -294,6 +297,7 @@ function Layout({
         </Drawer>
       )}
 
+      {/* Sidebar navigation component shown as a temporary drawer on mobile. */}
       {isMobile && (
         <Drawer
           variant="temporary"

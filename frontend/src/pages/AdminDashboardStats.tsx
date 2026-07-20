@@ -210,7 +210,11 @@ function AdminDashboardStats({ onViewAllTasks }: AdminDashboardStatsProps) {
                     fontWeight: 700,
                   }}
                 />
-                <Typography variant="caption" color="text.secondary">
+                <Typography
+                  sx={{ ml: 2 }}
+                  variant="caption"
+                  color="text.secondary"
+                >
                   {todayLabel}
                 </Typography>
               </Stack>
